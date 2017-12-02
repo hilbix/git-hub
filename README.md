@@ -3,13 +3,13 @@
 > What you see here is **planning**!
 > Most things are not yet implemented!
 
-# `gh`: access GitHub-API from shell
+# `gh`: Access GitHub-API from shell
 
 > I was unable to find somthing suitable within 5 minutes,
 > so I created something new from scratch.
 
 This is a shell tool to access the GitHub API from shell.
-It needs `git` and `python` version 3.
+It needs `git`, `python` version 3 and `curl`.
 
 The idea is, to get some of the information you want
 to properly work with GitHub repos of others.
