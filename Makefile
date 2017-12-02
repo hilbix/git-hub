@@ -12,9 +12,9 @@ love all:
 .PHONY: install
 install:
 	mkdir -p '$(HOME)/bin'
-	[ ".`readlink -m '$(HOME)/bin/gh'`" = ".`readlink -e gh.sh`" ] || ln -s -v --relative --backup=t gh.sh '$(HOME)/bin/gh'
+	[ ".`readlink -m '$(HOME)/bin/git-hub'`" = ".`readlink -e git-hub.sh`" ] || ln -s -v --relative --backup=t git-hub.sh '$(HOME)/bin/git-hub'
 	@echo
-	@echo 'Plese make sure $(HOME)/bin is in your $$PATH'
-	@echo 'To fully setup run: gh init --global'
+	@echo 'Plese make sure $(HOME)/bin is in your $$PATH such that git sees it'
+	@echo 'To fully setup run: git hub init --global your-github-username'
 	@echo
 
