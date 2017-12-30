@@ -1,6 +1,5 @@
 > Early stage, all can change in future
 >
-> What you see here is **planning**!
 > Most things are not yet implemented!
 
 # `git hub`: `git`-extension to access GitHub-API from shell
@@ -8,8 +7,8 @@
 > I was unable to find somthing suitable within 5 minutes,
 > so I created something new from scratch.
 >
-> - Sorry, `hub` is a Matmos.
-> - Other look like Moloch to me.
+> - Sorry, `hub` (some other project) is a Matmos.
+> - Other projects look like Moloch to me.
 >
 > Really, isn't there anything out there easy to use,
 > nothing to learn and nothing to think about?
@@ -26,11 +25,14 @@ full network to get easy access to all clones of some
 repository to gain oversight, what others changed,
 such that you can max out for you what others have done.
 
+
 ## Install
 
-	git clone https://github.com/hilbix/gh.git
-	cd git-gh
+	git clone https://github.com/hilbix/git-hub.git
+	cd git-hub
 	make install
+
+**Do not remove the source directory, because the "installed" softlink points to it!**
 
 Then run:
 
@@ -44,32 +46,41 @@ which might change over time, unexpected by you.
 Also some commands, which require to know your account, might fail.
 
 
-## `git hub [options]`
+## `git hub` online help
+
+To see a short help, you can call `git hub help` or `git hub options` or `git hub help help` etc.
+
+
+## `git hub` options
+
+There are some global options which must be given after `git hub`.  Like:
 
 - `--global` operate on the global `.gitconfig`, not the local one
-- `--user name` set different GitHub username for commands
+- `--user=name` set different GitHub username for commands
+
+etc.  For a full list of options please see `git hub help options`
 
 
-## `git hub commands`
+## `git hub` commands
 
-- `git hub init [user]`
-   - copy or update all settings to the local `.git/config`
-   - Missing options are taken from global `.gitconfig`
-   - Sets the default user to use with GitHub
+For a full list of commands, please see `git hub help`.
 
-- `git hub deinit`
-  - inverse of `git hub init`, remove local configs.
-  - prints out all settings which are deinited.
+For a more detailed explanation of the command, see `git hub help command`
 
-- `git hub config [key [value]`
-  - sets github configuration to a value
-  - without value, it retrieves the key's value
-  - without the key, it dumps the full configuration
-    in a format, suitable to restore it.
+The most important commands you need to get started are:
 
-- `git hub config`
+- `git hub --global init your-github-username` sets your global GitHub username to operate on
 
-- `git hub user USER` fetch/update all data from user
+- `git hub --global login token` sets a global GitHub access token to increase the number of queries you can issue per hour
+
+- `git hub status` shows all the current effective settings
+
+- `git hub --insecure --insecure status` shows your settings including the tokens in decoded form (such that you can copy it elsewhere)
+
+
+## Example use
+
+T.B.D.
 
 
 # Notes
@@ -85,13 +96,13 @@ an empty name.  `git hub` then tries to detect the
 username from the URL.
 
 If this still does not work for you, use the
-`git hub --user name command` variant.
+`git hub --user=name command` variant.
 
 Note that you can use aliases for several names:
 
-	git config --global alias.hup hub --user user1
-	git config --global alias.hut hub --user user2
-	git config --global alias.hum hub --user user3
+	git config --global alias.hup hub --user=user1
+	git config --global alias.hut hub --user=user2
+	git config --global alias.hum hub --user=user3
 
 This is just normal `git` standard functionality.
 
@@ -103,9 +114,9 @@ This is not yet implemented and it has a very low priority for me, sorry.
 
 ## Help
 
+For now this file here and the builtin help is all you got.
 
-For now this file here is all you got.  Perhaps in future I come
-around to support `git hub --help`.
+Perhaps somebody can help with the Wiki?
 
 
 # FAQ
@@ -126,7 +137,7 @@ License?
 
 Windows?
 
-- Works for the Linux-ABI
+- Works for the Linux-ABI.  So no separate Windows port is needed I hope.
 
 MacOS?
 
