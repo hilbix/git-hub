@@ -57,6 +57,7 @@ V() { set -- $? "$@"; U "${@:4}"; printf -v "$2" "%s" "$3"; return $1; }	# see h
 v() { local v; v="$(U v; "${@:2}")" || UNLESS x "$2" OOPS fail $?: "${@:2}"; V "$1" "$v" v; }
 
 # Simple tests
+isnum() { case "$1" in '') return 1;; (*[^0-9]*) return 1;; esac; return 0; }
 isAlpha() { case "$1" in '') return 1;; (*[^a-zA-Z]*) return 1;; esac; return 0; }
 isalpha() { case "$1" in '') return 1;; (*[^a-z]*) return 1;; esac; return 0; }
 isAlnum() { case "$1" in '') return 1;; (*[^a-zA-Z0-9]*) return 1;; esac; return 0; }
@@ -563,6 +564,7 @@ o config-set-unchanged token "$token"
 ##logout: deauthenticate
 # [--global] logout [--all] token: remove (all) token(s)
 # [--global] logout token abc: only remove given token
+: Clogout
 Clogout()
 {
 local opt_all
@@ -617,6 +619,105 @@ config-get-any token && WARN a token is still around: "$token"
 # url="/repos/$OWNER/$REPO/forks"
 # }
 
+
+: fetch-pages variable ASSOC URL
+fetch-pages()
+{
+local -n fetch="$1" repos="$2"
+
+[ -n "${repos[$url]}" ] && return 1		# already processed
+
+o fetch "$1" fetch "$url"
+repos["$url"]="$fetch"				# mark being processed
+
+for a in 
+
+### check for LINK pages here
+
+return 0
+}
+
+
+: valid-repo-name
+valid-repo-name()
+{
+case "$2" in
+*[^A-Za-z0-9./_-]*)	OOPS unsupported character in repo name: "$2";;	# perhaps this is too conservative?
+*/*/*)	OOPS invalid repo, too many slashes: "$2";;
+*/*)	;;
+*)	OOPS invalid repo, too few slashes: "$2";;
+esac
+return 0
+}
+
+: fetch-forks ASSOC NAME
+fetch-forks()
+{
+local -n repos="$1"
+local file val url="repos/$2/forks" n
+
+fetch-pages file "$1" "$url" || return 0	# already processed
+
+n=0
+while	let ++n
+	x json file val "[$n].full_name"
+do
+	
+
+}
+
+: recurse-repos ASSOC NAME
+recurse-repos()
+{
+local -n repos="$1"
+local file val url="repos/$2"
+
+o valid-repo-name "$2"
+
+fetch-pages file "$1" "$url" || return 0	# already processed
+o jsoncheck file owner.login "${2%/*}"
+
+# fetch the parent first
+x json file val parent.full_name && o recurse-repos "$1" "$parent"
+
+# fetch the forks
+o json file val forks_count
+o isnum "$val"
+
+[ 0 -lt "$val" ] && fetch-forks "$1" "$2"
+}
+
+
+: update-repo [repo]
+update-repo()
+{
+local repo
+local -A REPOS
+
+o get-repo repo "$1"
+
+o recurse-repos REPOS "$repo"
+}
+
+
+
+##update: fetch/update GitHub data into local cache
+## update: update information about the current repository
+## update repo [REPO]: update information about the given repository
+## update user [USER]: update information about the given user
+: Cupdate
+Cupdate()
+{
+args '' 1 2 "$@"
+set -- "${ARGS[@]}"
+
+case "$#:$1" in
+(0:|?:repo)	update-repo "${@:2}";;
+(
+(?:user)	update-user "${@:2}";;
+*)		OOPS unknown update target: "$1";;
+esac
+}
 
 ###
 ### MAIN
