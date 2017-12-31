@@ -658,12 +658,12 @@ local file val url="repos/$2/forks" n
 
 fetch-pages file "$1" "$url" || return 0	# already processed
 
-n=0
-while	let ++n
-	x json file val "[$n].full_name"
-do
-	
-
+#n=0
+#while	let ++n
+#	x json file val "[$n].full_name"
+#do
+#	json2sh | sed -n "s/^[^=]*_full__name='\\([^']*\\)'\$/\\1/p"
+#
 }
 
 : recurse-repos ASSOC NAME
