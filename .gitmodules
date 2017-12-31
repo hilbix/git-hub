@@ -1,0 +1,3 @@
+[submodule "json2sh"]
+	path = json2sh
+	url = https://github.com/hilbix/json2sh.git

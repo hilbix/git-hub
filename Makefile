@@ -3,13 +3,18 @@
 # This Works is placed under the terms of the Copyright Less License,
 # see file COPYRIGHT.CLL.  USE AT OWN RISK, ABSOLUTELY NO WARRANTY.
 
-.PHONY: love all
-love all:
+.PHONY:	love all
+love all:	sub
 	@echo
 	@echo "run: make install"
 	@echo
 
-.PHONY: install
+.PHONY:	sub
+sub:
+	[ -e json2sh/.git ] || git submodule update --init
+	make -C json2sh all
+
+.PHONY:	install
 install:
 	mkdir -p '$(HOME)/bin'
 	[ ".`readlink -m '$(HOME)/bin/git-hub'`" = ".`readlink -e git-hub.sh`" ] || ln -s -v --relative --backup=t git-hub.sh '$(HOME)/bin/git-hub'
