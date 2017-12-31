@@ -30,6 +30,7 @@ such that you can max out for you what others have done.
 
 	git clone https://github.com/hilbix/git-hub.git
 	cd git-hub
+	make
 	make install
 
 **Do not remove the source directory, because the "installed" softlink points to it!**
