@@ -61,7 +61,9 @@ isnum() { case "$1" in '') return 1;; (*[^0-9]*) return 1;; esac; return 0; }
 isAlpha() { case "$1" in '') return 1;; (*[^a-zA-Z]*) return 1;; esac; return 0; }
 isalpha() { case "$1" in '') return 1;; (*[^a-z]*) return 1;; esac; return 0; }
 isAlnum() { case "$1" in '') return 1;; (*[^a-zA-Z0-9]*) return 1;; esac; return 0; }
+isAlnum_() { case "$1" in '') return 1;; (*[^a-zA-Z0-9_]*) return 1;; esac; return 0; }
 isalnum() { case "$1" in '') return 1;; (*[^a-z0-9]*) return 1;; esac; return 0; }
+isalnum_() { case "$1" in '') return 1;; (*[^a-z0-9_]*) return 1;; esac; return 0; }
 validname() { case "$1" in (*[^a-z0-9]*);; ([a-z]*) return 0;; esac; return 1; }
 
 
@@ -512,10 +514,10 @@ O git config $hub_global --remove-section "$HUB_SECTION"
 Ctoken() { Clogin token "$@"; }
 
 QUERY_token=(
-	'Open https://github.com/settings/tokens'
-	'Click "Generate new token" (right, nearly at top)'
+	'Open https://github.com/settings/tokens/new'
 	'Give it a good name (like "git-hub $(hostname)")'
-	'Do not enable any of the scopes!'
+	'Set exiration.  "No expiration" is ok for readonly tokens'
+	'Do not enable any of the scopes yet!'
 	'(You can go back to GitHub and change scopes later.)'
 	'Click "Generate token" (at the bottom)'
 	'The token will only be shown on the page that follows.'
@@ -548,7 +550,7 @@ esac
 
 # Never output token in unscrambled form!
 [ -n "$token" ] || OOPS invalid token: cannot be empty or multiline
-isalnum "$token" || OOPS invalid token: does not contain expected characters
+isAlnum_ "$token" || OOPS invalid token: does not contain expected characters
 
 if	config-get orig token
 then
@@ -629,8 +631,6 @@ local -n fetch="$1" repos="$2"
 
 o fetch "$1" fetch "$url"
 repos["$url"]="$fetch"				# mark being processed
-
-for a in 
 
 ### check for LINK pages here
 
@@ -713,7 +713,6 @@ set -- "${ARGS[@]}"
 
 case "$#:$1" in
 (0:|?:repo)	update-repo "${@:2}";;
-(
 (?:user)	update-user "${@:2}";;
 *)		OOPS unknown update target: "$1";;
 esac
