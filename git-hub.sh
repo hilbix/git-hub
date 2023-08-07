@@ -473,8 +473,8 @@ done
 
 
 ##init [username]: initialize config
-# init: copy global config to local/global config
-# init username: set default GitHub username to use.
+# init: copy global config to local config
+# --global init username: set default GitHub username to use.
 #	If username is empty (''), try to guess user.
 #	See also: option --user=username
 : Cinit
