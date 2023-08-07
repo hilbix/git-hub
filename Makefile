@@ -19,7 +19,7 @@ install:
 	mkdir -p '$(HOME)/bin'
 	[ ".`readlink -m '$(HOME)/bin/git-hub'`" = ".`readlink -e git-hub.sh`" ] || ln -s -v --relative --backup=t git-hub.sh '$(HOME)/bin/git-hub'
 	@echo
-	@echo 'Plese make sure $(HOME)/bin is in your $$PATH such that git sees it'
-	@echo 'To fully setup run: git hub init --global your-github-username'
+	@a="`which git-hub`" && cmp -s git-hub.sh "$$a" || echo 'Plese make sure $(HOME)/bin is in your $$PATH such that git sees it'
+	@echo 'To fully setup run: git hub --global init your-github-username'
 	@echo
 
